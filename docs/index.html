@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mend — Reflect & Heal</title>
+  <!-- Tailwind CDN (no build needed) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="Mend: a gentle space for self-reflection and emotional healing." />
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <header class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">Mend</h1>
+    <p class="text-slate-600 mt-1">A gentle space for self-reflection & emotional healing.</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 pb-20">
+    <!-- Hero -->
+    <section class="bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
+      <h2 class="text-xl font-semibold">Frame your story</h2>
+      <p class="text-slate-600 mt-2">
+        Capture a small moment each day. Mend stores your reflections privately in your browser.
+        You can export anytime.
+      </p>
+
+      <!-- Prompt selector -->
+      <div class="mt-6 grid gap-3 sm:grid-cols-2">
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Choose a prompt</label>
+          <select id="promptSelect" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-400">
+            <option value="What am I feeling right now?">What am I feeling right now?</option>
+            <option value="What mattered today and why?">What mattered today and why?</option>
+            <option value="Where did I notice kindness (from me or others)?">Where did I notice kindness (from me or others)?</option>
+            <option value="What do I want to thank my past self for?">What do I want to thank my past self for?</option>
+            <option value="If this moment were a photo, what would the caption say?">If this moment were a photo, what would the caption say?</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700">Tag (optional)</label>
+          <input id="tagInput" placeholder="gratitude, family, calm…" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-400" />
+        </div>
+      </div>
+
+      <!-- Editor -->
+      <div class="mt-4">
+        <label class="block text-sm font-medium text-slate-700">Your reflection</label>
+        <textarea id="entryInput" rows="6" placeholder="Write freely. This is just for you."
+          class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400"></textarea>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="saveBtn" class="rounded-xl px-4 py-2 bg-slate-900 text-white hover:bg-slate-800">Save</button>
+          <button id="newBtn" class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100">New</button>
+          <button id="exportBtn" class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100">Export (.json)</button>
+          <button id="clearBtn" class="rounded-xl px-4 py-2 border border-red-300 text-red-700 hover:bg-red-50">Clear All (local)</button>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">Private: entries are stored locally in your browser (not uploaded).</p>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mt-8">
+      <h3 class="text-lg font-semibold">Your timeline</h3>
+      <ul id="timeline" class="mt-3 space-y-3"></ul>
+    </section>
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-4 pb-10 text-xs text-slate-500">
+    © <span id="year"></span> Bayview Arts · Mend
+  </footer>
+
+<script>
+  // --- Simple localStorage journal ---
+  const LS_KEY = "mend_entries_v1";
+  const $ = (id) => document.getElementById(id);
+  const state = { entries: [] };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      state.entries = raw ? JSON.parse(raw) : [];
+    } catch { state.entries = []; }
+    render();
+  }
+  function persist() {
+    localStorage.setItem(LS_KEY, JSON.stringify(state.entries));
+  }
+  function render() {
+    const list = $("timeline");
+    list.innerHTML = "";
+    if (!state.entries.length) {
+      list.innerHTML = '<li class="text-slate-500 text-sm">No entries yet. Your first reflection becomes the start of your story.</li>';
+      return;
+    }
+    for (const e of state.entries.slice().reverse()) {
+      const li = document.createElement("li");
+      li.className = "bg-white rounded-2xl border border-slate-200 p-4 shadow-sm";
+      li.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-slate-500">${new Date(e.ts).toLocaleString()}</div>
+          ${e.tag ? `<span class="text-xs rounded-full px-2 py-1 bg-slate-100 border border-slate-200">${e.tag}</span>` : ""}
+        </div>
+        <div class="text-sm mt-1 text-slate-700"><strong>${e.prompt}</strong></div>
+        <p class="mt-2 whitespace-pre-wrap">${escapeHtml(e.body)}</p>
+      `;
+      list.appendChild(li);
+    }
+  }
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // Actions
+  $("saveBtn").addEventListener("click", () => {
+    const prompt = $("promptSelect").value.trim();
+    const tag = $("tagInput").value.trim();
+    const body = $("entryInput").value.trim();
+    if (!body) return alert("Write a few words first.");
+    state.entries.push({ id: crypto.randomUUID(), ts: Date.now(), prompt, tag, body });
+    persist(); render(); $("entryInput").value = ""; $("tagInput").value = "";
+  });
+  $("newBtn").addEventListener("click", () => { $("entryInput").value = ""; $("tagInput").value = ""; });
+  $("exportBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(state.entries, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "mend-entries.json";
+    a.click();
+  });
+  $("clearBtn").addEventListener("click", () => {
+    if (confirm("This clears only your local browser copy. Continue?")) {
+      localStorage.removeItem(LS_KEY);
+      state.entries = []; render();
+    }
+  });
+
+  // init
+  document.getElementById("year").textContent = new Date().getFullYear();
+  load();
+</script>
+</body>
+</html>
