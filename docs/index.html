@@ -4,18 +4,31 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mend — Reflect & Heal</title>
+  <meta name="description" content="Mend: a gentle space for self-reflection and emotional healing." />
+  <link rel="icon" type="image/png" href="./mend-favicon.png" />
   <!-- Tailwind CDN (no build needed) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="description" content="Mend: a gentle space for self-reflection and emotional healing." />
 </head>
-<body class="bg-slate-50 text-slate-800">
-  <header class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">Mend</h1>
-    <p class="text-slate-600 mt-1">A gentle space for self-reflection & emotional healing.</p>
+
+<body class="bg-gradient-to-b from-slate-50 to-slate-100 text-slate-800">
+  <header class="relative max-w-4xl mx-auto px-4 py-8">
+    <!-- Simple text logo lockup -->
+    <div class="flex items-center gap-3 mb-4">
+      <div class="size-9 rounded-xl bg-slate-900 text-white grid place-items-center">M</div>
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">Mend</h1>
+        <p class="text-slate-600">A gentle space for self-reflection &amp; emotional healing.</p>
+      </div>
+    </div>
+    <!-- Cover image (swap for Bayview/Mend photo later) -->
+    <img
+      src="https://images.unsplash.com/photo-1503264116251-35a269479413?w=1600&q=80"
+      alt="Calm ocean horizon"
+      class="w-full h-48 sm:h-64 object-cover rounded-2xl shadow-sm border border-slate-200">
   </header>
 
   <main class="max-w-4xl mx-auto px-4 pb-20">
-    <!-- Hero -->
+    <!-- Intro / Editor card -->
     <section class="bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200">
       <h2 class="text-xl font-semibold">Frame your story</h2>
       <p class="text-slate-600 mt-2">
@@ -23,11 +36,12 @@
         You can export anytime.
       </p>
 
-      <!-- Prompt selector -->
+      <!-- Prompt + Tag -->
       <div class="mt-6 grid gap-3 sm:grid-cols-2">
         <div>
           <label class="block text-sm font-medium text-slate-700">Choose a prompt</label>
-          <select id="promptSelect" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-400">
+          <select id="promptSelect"
+            class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-400">
             <option value="What am I feeling right now?">What am I feeling right now?</option>
             <option value="What mattered today and why?">What mattered today and why?</option>
             <option value="Where did I notice kindness (from me or others)?">Where did I notice kindness (from me or others)?</option>
@@ -37,7 +51,8 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-700">Tag (optional)</label>
-          <input id="tagInput" placeholder="gratitude, family, calm…" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-400" />
+          <input id="tagInput" placeholder="gratitude, family, calm…"
+            class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-slate-400" />
         </div>
       </div>
 
@@ -46,13 +61,39 @@
         <label class="block text-sm font-medium text-slate-700">Your reflection</label>
         <textarea id="entryInput" rows="6" placeholder="Write freely. This is just for you."
           class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-3 focus:outline-none focus:ring-2 focus:ring-slate-400"></textarea>
+
+        <!-- Buttons -->
         <div class="mt-3 flex flex-wrap gap-2">
-          <button id="saveBtn" class="rounded-xl px-4 py-2 bg-slate-900 text-white hover:bg-slate-800">Save</button>
-          <button id="newBtn" class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100">New</button>
-          <button id="exportBtn" class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100">Export (.json)</button>
-          <button id="clearBtn" class="rounded-xl px-4 py-2 border border-red-300 text-red-700 hover:bg-red-50">Clear All (local)</button>
+          <button id="saveBtn"
+            class="rounded-xl px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400">
+            Save
+          </button>
+          <button id="newBtn"
+            class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300">
+            New
+          </button>
+          <button id="exportBtn"
+            class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300">
+            Export (.json)
+          </button>
+          <button id="importBtn"
+            class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300">
+            Import (.json)
+          </button>
+          <button id="printBtn"
+            class="rounded-xl px-4 py-2 border border-slate-300 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-300">
+            🖨️ Print My Story
+          </button>
+          <button id="clearBtn"
+            class="rounded-xl px-4 py-2 border border-red-300 text-red-700 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-300">
+            Clear All (local)
+          </button>
         </div>
-        <p class="text-xs text-slate-500 mt-2">Private: entries are stored locally in your browser (not uploaded).</p>
+
+        <p class="text-xs text-slate-500 mt-2">
+          Private: entries are stored locally in your browser (not uploaded).
+          Tip: Use “Print My Story” → <strong>Save as PDF</strong> if you want to send it to Bayview Arts for framing.
+        </p>
       </div>
     </section>
 
@@ -67,74 +108,127 @@
     © <span id="year"></span> Bayview Arts · Mend
   </footer>
 
-<script>
-  // --- Simple localStorage journal ---
-  const LS_KEY = "mend_entries_v1";
-  const $ = (id) => document.getElementById(id);
-  const state = { entries: [] };
+  <script>
+    // --- Local journal with localStorage ---
+    const LS_KEY = "mend_entries_v1";
+    const $ = (id) => document.getElementById(id);
+    const state = { entries: [] };
 
-  function load() {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      state.entries = raw ? JSON.parse(raw) : [];
-    } catch { state.entries = []; }
-    render();
-  }
-  function persist() {
-    localStorage.setItem(LS_KEY, JSON.stringify(state.entries));
-  }
-  function render() {
-    const list = $("timeline");
-    list.innerHTML = "";
-    if (!state.entries.length) {
-      list.innerHTML = '<li class="text-slate-500 text-sm">No entries yet. Your first reflection becomes the start of your story.</li>';
-      return;
+    function load() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        state.entries = raw ? JSON.parse(raw) : [];
+      } catch { state.entries = []; }
+      render();
     }
-    for (const e of state.entries.slice().reverse()) {
-      const li = document.createElement("li");
-      li.className = "bg-white rounded-2xl border border-slate-200 p-4 shadow-sm";
-      li.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div class="text-sm text-slate-500">${new Date(e.ts).toLocaleString()}</div>
-          ${e.tag ? `<span class="text-xs rounded-full px-2 py-1 bg-slate-100 border border-slate-200">${e.tag}</span>` : ""}
-        </div>
-        <div class="text-sm mt-1 text-slate-700"><strong>${e.prompt}</strong></div>
-        <p class="mt-2 whitespace-pre-wrap">${escapeHtml(e.body)}</p>
+    function persist() {
+      localStorage.setItem(LS_KEY, JSON.stringify(state.entries));
+    }
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    function render() {
+      const list = $("timeline");
+      list.innerHTML = "";
+      if (!state.entries.length) {
+        list.innerHTML = '<li class="text-slate-500 text-sm">No entries yet. Your first reflection becomes the start of your story.</li>';
+        return;
+      }
+      for (const e of state.entries.slice().reverse()) {
+        const li = document.createElement("li");
+        li.className = "bg-white rounded-2xl border border-slate-200 p-4 shadow-sm hover:bg-slate-50";
+        li.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="text-sm text-slate-500">${new Date(e.ts).toLocaleString()}</div>
+            ${e.tag ? `<span class="text-xs rounded-full px-2 py-1 bg-slate-100 border border-slate-200">${e.tag}</span>` : ""}
+          </div>
+          <div class="text-sm mt-1 text-slate-700"><strong>${e.prompt}</strong></div>
+          <p class="mt-2 whitespace-pre-wrap">${escapeHtml(e.body)}</p>
+        `;
+        list.appendChild(li);
+      }
+    }
+
+    // Actions
+    $("saveBtn").addEventListener("click", () => {
+      const prompt = $("promptSelect").value.trim();
+      const tag = $("tagInput").value.trim();
+      const body = $("entryInput").value.trim();
+      if (!body) return alert("Write a few words first.");
+      state.entries.push({ id: crypto.randomUUID(), ts: Date.now(), prompt, tag, body });
+      persist(); render(); $("entryInput").value = ""; $("tagInput").value = "";
+    });
+    $("newBtn").addEventListener("click", () => { $("entryInput").value = ""; $("tagInput").value = ""; });
+
+    // Export
+    $("exportBtn").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(state.entries, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "mend-entries.json";
+      a.click();
+    });
+
+    // Import
+    $("importBtn").addEventListener("click", async () => {
+      const input = document.createElement("input");
+      input.type = "file"; input.accept = "application/json";
+      input.onchange = async () => {
+        const file = input.files[0]; if (!file) return;
+        try {
+          const text = await file.text();
+          const data = JSON.parse(text);
+          if (!Array.isArray(data)) throw new Error("Invalid file");
+          const cleaned = data.filter(e => e && e.ts && e.body);
+          if (!cleaned.length) return alert("No valid entries found.");
+          state.entries = cleaned; persist(); render();
+          alert("Imported reflections successfully.");
+        } catch (e) { alert("Import failed: " + e.message); }
+      };
+      input.click();
+    });
+
+    // Clear
+    $("clearBtn").addEventListener("click", () => {
+      if (confirm("This clears only your local browser copy. Continue?")) {
+        localStorage.removeItem(LS_KEY);
+        state.entries = []; render();
+      }
+    });
+
+    // Print (A4-friendly)
+    $("printBtn").addEventListener("click", () => {
+      if (!state.entries.length) return alert("No reflections to print yet.");
+      const html = `
+        <html><head><title>My Mend Reflections</title>
+        <style>
+          @page { size: A4; margin: 18mm; }
+          body{ font-family: ui-sans-serif, system-ui, -apple-system; color:#111; }
+          h1{ text-align:center; margin:0 0 10mm; font-size:20pt; }
+          article{ margin:0 0 6mm 0; page-break-inside: avoid; }
+          time{ font-size:9pt; color:#555 }
+          h2{ font-size:12pt; margin:2mm 0 1mm 0 }
+          p{ white-space:pre-wrap; line-height:1.45; font-size:11pt; margin:0 }
+        </style></head><body>
+        <h1>My Mend Reflections</h1>
+        ${state.entries.map(e => `
+          <article>
+            <time>${new Date(e.ts).toLocaleString()}</time>
+            ${e.tag ? `<div><em>${e.tag}</em></div>` : ""}
+            <h2>${e.prompt}</h2>
+            <p>${escapeHtml(e.body)}</p>
+          </article>`).join("")}
+        <script>window.print();<\/script>
+        </body></html>
       `;
-      list.appendChild(li);
-    }
-  }
-  function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
+      const win = window.open("", "_blank");
+      win.document.write(html);
+      win.document.close();
+    });
 
-  // Actions
-  $("saveBtn").addEventListener("click", () => {
-    const prompt = $("promptSelect").value.trim();
-    const tag = $("tagInput").value.trim();
-    const body = $("entryInput").value.trim();
-    if (!body) return alert("Write a few words first.");
-    state.entries.push({ id: crypto.randomUUID(), ts: Date.now(), prompt, tag, body });
-    persist(); render(); $("entryInput").value = ""; $("tagInput").value = "";
-  });
-  $("newBtn").addEventListener("click", () => { $("entryInput").value = ""; $("tagInput").value = ""; });
-  $("exportBtn").addEventListener("click", () => {
-    const blob = new Blob([JSON.stringify(state.entries, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "mend-entries.json";
-    a.click();
-  });
-  $("clearBtn").addEventListener("click", () => {
-    if (confirm("This clears only your local browser copy. Continue?")) {
-      localStorage.removeItem(LS_KEY);
-      state.entries = []; render();
-    }
-  });
-
-  // init
-  document.getElementById("year").textContent = new Date().getFullYear();
-  load();
-</script>
+    // init
+    document.getElementById("year").textContent = new Date().getFullYear();
+    load();
+  </script>
 </body>
 </html>
