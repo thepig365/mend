@@ -1,11 +1,13 @@
-.DS_Store
+# Node / Next.js
 node_modules/
-dist/
-build/
 .next/
 out/
-.env
-.env.*
-!.env.example
-logs
 *.log
+
+# Local env & data
+.env.local
+data/*.json
+
+# OS
+.DS_Store
+Thumbs.db
